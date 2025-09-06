@@ -1,12 +1,18 @@
-"use server";
+'use server';
 
 import { generateObject } from "ai";
 import { google } from "@ai-sdk/google";
-
 import { db } from "@/firebase/admin";
 import { feedbackSchema } from "@/constants";
+import { 
+  CreateFeedbackParams, 
+  Feedback, 
+  Interview, 
+  GetFeedbackByInterviewIdParams, 
+  GetLatestInterviewsParams 
+} from "@/types";
 
-export async function createFeedback(params: CreateFeedbackParams) {
+export async function createFeedback(params: CreateFeedbackParams): Promise<{ success: boolean; feedbackId?: string }> {
   const { interviewId, userId, transcript, feedbackId } = params;
 
   try {
@@ -38,7 +44,7 @@ export async function createFeedback(params: CreateFeedbackParams) {
         "You are a professional interviewer analyzing a mock interview. Your task is to evaluate the candidate based on structured categories",
     });
 
-    const feedback = {
+    const feedback: Omit<Feedback, 'id'> = {
       interviewId: interviewId,
       userId: userId,
       totalScore: object.totalScore,
@@ -67,9 +73,15 @@ export async function createFeedback(params: CreateFeedbackParams) {
 }
 
 export async function getInterviewById(id: string): Promise<Interview | null> {
-  const interview = await db.collection("interviews").doc(id).get();
+  try {
+    const interviewDoc = await db.collection("interviews").doc(id).get();
+    if (!interviewDoc.exists) return null;
 
-  return interview.data() as Interview | null;
+    return { id: interviewDoc.id, ...interviewDoc.data() } as Interview;
+  } catch (error) {
+    console.error("Error getting interview:", error);
+    return null;
+  }
 }
 
 export async function getFeedbackByInterviewId(
@@ -77,49 +89,64 @@ export async function getFeedbackByInterviewId(
 ): Promise<Feedback | null> {
   const { interviewId, userId } = params;
 
-  const querySnapshot = await db
-    .collection("feedback")
-    .where("interviewId", "==", interviewId)
-    .where("userId", "==", userId)
-    .limit(1)
-    .get();
+  try {
+    const querySnapshot = await db
+      .collection("feedback")
+      .where("interviewId", "==", interviewId)
+      .where("userId", "==", userId)
+      .limit(1)
+      .get();
 
-  if (querySnapshot.empty) return null;
+    if (querySnapshot.empty) return null;
 
-  const feedbackDoc = querySnapshot.docs[0];
-  return { id: feedbackDoc.id, ...feedbackDoc.data() } as Feedback;
+    const feedbackDoc = querySnapshot.docs[0];
+    return { id: feedbackDoc.id, ...feedbackDoc.data() } as Feedback;
+  } catch (error) {
+    console.error("Error getting feedback:", error);
+    return null;
+  }
 }
 
 export async function getLatestInterviews(
   params: GetLatestInterviewsParams
-): Promise<Interview[] | null> {
+): Promise<Interview[]> {
   const { userId, limit = 20 } = params;
 
-  const interviews = await db
-    .collection("interviews")
-    .orderBy("createdAt", "desc")
-    .where("finalized", "==", true)
-    .where("userId", "!=", userId)
-    .limit(limit)
-    .get();
+  try {
+    const querySnapshot = await db
+      .collection("interviews")
+      .orderBy("createdAt", "desc")
+      .where("finalized", "==", true)
+      .where("userId", "!=", userId)
+      .limit(limit)
+      .get();
 
-  return interviews.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as Interview[];
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Interview[];
+  } catch (error) {
+    console.error("Error getting latest interviews:", error);
+    return [];
+  }
 }
 
 export async function getInterviewsByUserId(
   userId: string
-): Promise<Interview[] | null> {
-  const interviews = await db
-    .collection("interviews")
-    .where("userId", "==", userId)
-    .orderBy("createdAt", "desc")
-    .get();
+): Promise<Interview[]> {
+  try {
+    const querySnapshot = await db
+      .collection("interviews")
+      .where("userId", "==", userId)
+      .orderBy("createdAt", "desc")
+      .get();
 
-  return interviews.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as Interview[];
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Interview[];
+  } catch (error) {
+    console.error("Error getting user interviews:", error);
+    return [];
+  }
 }
