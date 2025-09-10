@@ -25,6 +25,12 @@ export async function setSessionCookie(idToken: string) {
   });
 }
 
+// Clear session cookie
+export async function clearSession() {
+  const cookieStore = await cookies();
+  cookieStore.delete('session');
+}
+
 export async function signUp(params: SignUpParams) {
   const { uid, name, email } = params;
 
