@@ -140,7 +140,34 @@
   }
   body {
     @apply bg-background text-foreground;
+    position: relative;
+    overflow-x: hidden;
   }
+  
+  /* Base grid background with subtle static lines and blur effect */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -3;
+    background: 
+      /* Original pattern with dark base */
+      var(--bg-pattern) top no-repeat,
+      /* Static grid lines - very subtle */
+      linear-gradient(90deg, transparent 99%, rgba(221, 223, 255, 0.015) 100%),
+      linear-gradient(0deg, transparent 99%, rgba(221, 223, 255, 0.015) 100%);
+    background-size: 
+      auto,
+      80px 80px,
+      80px 80px;
+    /* Add subtle blur to the background pattern */
+    filter: blur(0.5px);
+    pointer-events: none;
+  }
+  
   p {
     @apply text-light-100;
   }
@@ -156,6 +183,194 @@
   li {
     @apply text-light-100;
   }
+}
+
+/* Floating lines container with subtle backdrop blur */
+.floating-lines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: -2;
+  overflow: hidden;
+  /* Add subtle backdrop blur for depth */
+  backdrop-filter: blur(0.3px);
+}
+
+/* Horizontal floating lines - slower speeds */
+.floating-line-horizontal {
+  position: absolute;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.6), rgba(59, 130, 246, 0.3), transparent);
+  height: 1px;
+  animation: floatHorizontal linear infinite;
+  /* Add subtle glow effect */
+  filter: blur(0.2px);
+}
+
+.floating-line-horizontal:nth-child(1) {
+  top: 15%;
+  width: 300px;
+  animation-delay: 0s;
+  animation-duration: 25s;
+}
+
+.floating-line-horizontal:nth-child(2) {
+  top: 35%;
+  width: 200px;
+  animation-delay: -6s;
+  animation-duration: 20s;
+}
+
+.floating-line-horizontal:nth-child(3) {
+  top: 55%;
+  width: 250px;
+  animation-delay: -12s;
+  animation-duration: 30s;
+}
+
+.floating-line-horizontal:nth-child(4) {
+  top: 75%;
+  width: 180px;
+  animation-delay: -18s;
+  animation-duration: 16s;
+}
+
+.floating-line-horizontal:nth-child(5) {
+  top: 90%;
+  width: 220px;
+  animation-delay: -9s;
+  animation-duration: 22s;
+}
+
+/* Vertical floating lines - slower speeds */
+.floating-line-vertical {
+  position: absolute;
+  background: linear-gradient(0deg, transparent, rgba(29, 78, 216, 0.2), rgba(29, 78, 216, 0.4), rgba(29, 78, 216, 0.2), transparent);
+  width: 1px;
+  animation: floatVertical linear infinite;
+  /* Add subtle glow effect */
+  filter: blur(0.2px);
+}
+
+.floating-line-vertical:nth-child(6) {
+  left: 10%;
+  height: 250px;
+  animation-delay: -3s;
+  animation-duration: 28s;
+}
+
+.floating-line-vertical:nth-child(7) {
+  left: 30%;
+  height: 180px;
+  animation-delay: -9s;
+  animation-duration: 22s;
+}
+
+.floating-line-vertical:nth-child(8) {
+  left: 50%;
+  height: 220px;
+  animation-delay: -15s;
+  animation-duration: 35s;
+}
+
+.floating-line-vertical:nth-child(9) {
+  left: 70%;
+  height: 200px;
+  animation-delay: -21s;
+  animation-duration: 18s;
+}
+
+.floating-line-vertical:nth-child(10) {
+  left: 85%;
+  height: 160px;
+  animation-delay: -5s;
+  animation-duration: 26s;
+}
+
+/* Synchronized Neon Border Animation Styles - VERY SLOW */
+.neon-border-container {
+  position: relative;
+  background: linear-gradient(145deg, #1A1C20, #08090D);
+  border-radius: 16px;
+  padding: 2px;
+  overflow: hidden;
+}
+
+/* Single synchronized neon line that travels around the border - MUCH SLOWER */
+.neon-border-line {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 16px;
+  background: conic-gradient(
+    from 0deg at 50% 50%, 
+    transparent 0deg, 
+    transparent 350deg,
+    rgba(59, 130, 246, 0.3) 355deg, 
+    rgba(99, 165, 255, 0.8) 360deg, 
+    rgba(59, 130, 246, 0.3) 5deg, 
+    transparent 10deg,
+    transparent 360deg
+  );
+  animation: neonBorderSync 15s linear infinite;
+  filter: blur(1.5px);
+}
+
+/* Enhanced glow effect on hover */
+.neon-border-container:hover .neon-border-line {
+  filter: blur(1px);
+  animation-duration: 10s;
+  background: conic-gradient(
+    from 0deg at 50% 50%, 
+    transparent 0deg, 
+    transparent 345deg,
+    rgba(59, 130, 246, 0.5) 350deg, 
+    rgba(99, 165, 255, 1) 360deg, 
+    rgba(59, 130, 246, 0.5) 10deg, 
+    transparent 15deg,
+    transparent 360deg
+  );
+}
+
+.neon-border-container:hover {
+  transform: translateY(-2px);
+  transition: transform 0.3s ease;
+}
+
+.neon-content {
+  position: relative;
+  background: linear-gradient(145deg, #1A1C20, #08090D);
+  border-radius: 14px;
+  padding: 24px;
+  height: 100%;
+  z-index: 2;
+}
+
+/* Additional subtle glow layer for enhanced visibility */
+.neon-border-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  background: conic-gradient(
+    from 0deg at 50% 50%, 
+    transparent 0deg, 
+    transparent 355deg,
+    rgba(59, 130, 246, 0.1) 358deg, 
+    rgba(99, 165, 255, 0.3) 360deg, 
+    rgba(59, 130, 246, 0.1) 2deg, 
+    transparent 5deg,
+    transparent 360deg
+  );
+  animation: neonBorderSync 15s linear infinite;
+  filter: blur(3px);
 }
 
 @layer components {
@@ -182,7 +397,7 @@
   }
 
   .btn-upload {
-    @apply bg-dark-200 rounded-full min-h-12 px-5 cursor-pointer border border-input  overflow-hidden;
+    @apply bg-dark-200 rounded-full min-h-12 px-5 cursor-pointer border border-input overflow-hidden;
   }
 
   .card-border {
@@ -241,7 +456,7 @@
     @apply border-gradient p-0.5 rounded-2xl w-full;
 
     .transcript {
-      @apply dark-gradient rounded-2xl  min-h-12 px-5 py-3 flex items-center justify-center;
+      @apply dark-gradient rounded-2xl min-h-12 px-5 py-3 flex items-center justify-center;
 
       p {
         @apply text-lg text-center text-white;
@@ -320,6 +535,51 @@
 
 @utility animate-fadeIn {
   animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Animation keyframes for slower floating lines */
+@keyframes floatHorizontal {
+  0% {
+    left: -300px;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes floatVertical {
+  0% {
+    top: -250px;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+/* Very slow synchronized neon border animation keyframe */
+@keyframes neonBorderSync {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes fadeIn {

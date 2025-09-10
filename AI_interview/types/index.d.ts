@@ -44,7 +44,6 @@ export interface FunctionCallResultMessage extends BaseMessage {
   };
 }
 
-// Add this interface for saved messages
 export interface SavedMessage {
   role: string;
   content: string;
@@ -154,4 +153,39 @@ export interface InterviewFormProps {
 
 export interface TechIconProps {
   techStack: string[];
+}
+
+export interface RoadmapCardProps {
+  userId: string;
+  roadmapId: string;
+  jobRole: string;
+  currentPosition: string;
+  targetTimeline: string;
+  createdAt: Date;
+  progress: number;
+}
+
+export interface Roadmap {
+  id: string;
+  userId: string;
+  jobRole: string;
+  currentPosition: string;
+  experienceLevel: string;
+  targetTimeline: string;
+  skills: string[];
+  goals: string[];
+  content: any;
+  progress: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface GenerateRoadmapParams {
+  jobRole: string;
+  currentPosition: string;
+  experienceLevel: string;
+  targetTimeline: string;
+  skills: string[];
+  goals: string[];
+  userId: string;
 }
