@@ -34,11 +34,9 @@ const Agent = ({
   const [messages, setMessages] = useState<SavedMessage[]>([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [lastMessage, setLastMessage] = useState<string>("");
-  const [currentCallId, setCurrentCallId] = useState<string | null>(null);
 
   useEffect(() => {
     const onCallStart = () => {
-      console.log("📞 Call started");
       setCallStatus(CallStatus.ACTIVE);
     };
 
