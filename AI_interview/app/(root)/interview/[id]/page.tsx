@@ -54,6 +54,11 @@ const InterviewDetails = async ({ params }: RouteParams) => {
         type="interview"
         questions={interview.questions}
         feedbackId={feedback?.id}
+        role={interview.role}
+        interviewType={interview.type}
+        level={interview.level}
+        techstack={interview.techstack}
+        amount={interview.questions?.length?.toString() || "5"}
       />
     </>
   );
