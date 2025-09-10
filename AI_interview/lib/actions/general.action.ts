@@ -95,94 +95,31 @@ export async function getLatestInterviews(
 ): Promise<Interview[] | null> {
   const { userId, limit = 20 } = params;
 
-  console.log("📚 Getting latest interviews, excluding userId:", userId);
-  
-  try {
-    // First, try to get interviews where userId is different from current user
-    let interviews = await db
-      .collection("interviews")
-      .orderBy("createdAt", "desc")
-      .where("finalized", "==", true)
-      .where("userId", "!=", userId)
-      .limit(limit)
-      .get();
+  const interviews = await db
+    .collection("interviews")
+    .orderBy("createdAt", "desc")
+    .where("finalized", "==", true)
+    .where("userId", "!=", userId)
+    .limit(limit)
+    .get();
 
-    console.log("📋 Found", interviews.docs.length, "latest interviews (excluding user)");
-    
-    // If no interviews found, also include interviews with empty userId (community interviews)
-    if (interviews.docs.length === 0) {
-      interviews = await db
-        .collection("interviews")
-        .orderBy("createdAt", "desc")
-        .where("finalized", "==", true)
-        .limit(limit)
-        .get();
-      
-      console.log("📋 Found", interviews.docs.length, "total interviews (including all)");
-    }
-    
-    const result = interviews.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Interview[];
-    
-    console.log("🔄 Latest interviews data:", result.map(i => ({ 
-      id: i.id, 
-      role: i.role, 
-      userId: i.userId,
-      createdAt: i.createdAt 
-    })));
-    
-    return result;
-  } catch (error) {
-    console.error("❌ Error getting latest interviews:", error);
-    // Fallback: get all interviews without userId filter
-    const allInterviews = await db
-      .collection("interviews")
-      .orderBy("createdAt", "desc")
-      .where("finalized", "==", true)
-      .limit(limit)
-      .get();
-    
-    const result = allInterviews.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Interview[];
-    
-    console.log("🔄 Fallback: got", result.length, "interviews");
-    return result;
-  }
+  return interviews.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as Interview[];
 }
 
 export async function getInterviewsByUserId(
   userId: string
 ): Promise<Interview[] | null> {
-  console.log("👤 Getting interviews for userId:", userId);
-  
-  if (!userId || userId.trim() === "") {
-    console.log("⚠️ No userId provided, returning empty array");
-    return [];
-  }
-  
   const interviews = await db
     .collection("interviews")
     .where("userId", "==", userId)
     .orderBy("createdAt", "desc")
     .get();
 
-  console.log("📊 Found", interviews.docs.length, "user interviews");
-  
-  const result = interviews.docs.map((doc) => ({
+  return interviews.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as Interview[];
-  
-  console.log("🔍 User interviews data:", result.map(i => ({ 
-    id: i.id, 
-    role: i.role, 
-    createdAt: i.createdAt,
-    finalized: i.finalized 
-  })));
-  
-  return result;
 }
