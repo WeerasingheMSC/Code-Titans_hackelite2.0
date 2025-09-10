@@ -117,26 +117,58 @@ const Agent = ({
   const handleCall = async () => {
     setCallStatus(CallStatus.CONNECTING);
 
-    if (type === "generate") {
-      await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
-        variableValues: {
-          username: userName,
-          userid: userId,
-        },
-      });
-    } else {
-      let formattedQuestions = "";
-      if (questions) {
-        formattedQuestions = questions
-          .map((question) => `- ${question}`)
-          .join("\n");
+    try {
+      console.log("🚀 Starting Vapi call - Type:", type);
+      console.log("User ID:", userId);
+      console.log("Username:", userName);
+      console.log("Interview ID:", interviewId);
+
+      if (type === "generate") {
+        const assistantId = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID;
+        
+        console.log("Assistant ID:", assistantId);
+        
+        if (!assistantId) {
+          throw new Error("NEXT_PUBLIC_VAPI_ASSISTANT_ID is not configured");
+        }
+
+        // Generate a unique interview ID for this session
+        const newInterviewId = `interview_${Date.now()}`;
+        
+        console.log("Generated Interview ID:", newInterviewId);
+
+        // Start the assistant with user variables
+        await vapi.start(assistantId, {
+          variableValues: {
+            username: userName || "User",
+            userid: userId || "anonymous",
+            interviewId: newInterviewId,
+          },
+        });
+      } else {
+        let formattedQuestions = "";
+        if (questions) {
+          formattedQuestions = questions
+            .map((question) => `- ${question}`)
+            .join("\n");
+        }
+
+        console.log("Using Interviewer config");
+
+        await vapi.start(interviewer, {
+          variableValues: {
+            questions: formattedQuestions,
+            username: userName || "User",
+            userid: userId || "anonymous",
+          },
+        });
       }
 
-      await vapi.start(interviewer, {
-        variableValues: {
-          questions: formattedQuestions,
-        },
-      });
+      console.log("✅ Vapi call started successfully");
+    } catch (error: any) {
+      console.error("❌ Vapi call failed:", error);
+      setCallStatus(CallStatus.INACTIVE);
+      alert(`Failed to start interview: ${error.message || "Unknown error"}`);
     }
   };
 
@@ -165,19 +197,17 @@ const Agent = ({
             <div className={cn(
               "inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium",
               {
-                "bg-gray-500/20 text-gray-300": callStatus === "INACTIVE",
+                "bg-gray-500/20 text-gray-300": callStatus === "INACTIVE" || callStatus === "FINISHED",
                 "bg-yellow-500/20 text-yellow-300": callStatus === "CONNECTING",
-                "bg-success-100/20 text-success-100": callStatus === "ACTIVE",
-                "bg-gray-500/20 text-gray-300": callStatus === "FINISHED"
+                "bg-success-100/20 text-success-100": callStatus === "ACTIVE"
               }
             )}>
               <div className={cn(
                 "w-2 h-2 rounded-full",
                 {
-                  "bg-gray-400": callStatus === "INACTIVE",
+                  "bg-gray-400": callStatus === "INACTIVE" || callStatus === "FINISHED",
                   "bg-yellow-500 animate-pulse": callStatus === "CONNECTING",
-                  "bg-success-100 animate-pulse": callStatus === "ACTIVE",
-                  "bg-gray-400": callStatus === "FINISHED"
+                  "bg-success-100 animate-pulse": callStatus === "ACTIVE"
                 }
               )} />
               {callStatus === "INACTIVE" && "Ready to start"}
