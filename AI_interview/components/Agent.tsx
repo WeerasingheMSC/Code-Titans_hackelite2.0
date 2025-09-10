@@ -39,23 +39,56 @@ const Agent = ({
   const [messages, setMessages] = useState<SavedMessage[]>([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [lastMessage, setLastMessage] = useState<string>("");
+  const [currentCallId, setCurrentCallId] = useState<string | null>(null);
 
   useEffect(() => {
     const onCallStart = () => {
+      console.log("📞 Call started");
       setCallStatus(CallStatus.ACTIVE);
     };
 
-    const onCallEnd = () => {
-      console.log("📞 Call ended - checking for feedback generation");
+    const onCallEnd = async () => {
+      console.log("📞 Call ended");
       setCallStatus(CallStatus.FINISHED);
       
-      // Set a timeout to check if feedback was generated
-      setTimeout(() => {
-        if (type === "generate" && interviewId) {
-          console.log("🔄 Redirecting to feedback page after workflow completion");
-          router.push(`/interview/${interviewId}/feedback`);
+      // For the "generate" type, we'll process the call using Vapi API
+      if (type === "generate" && userId && userName && interviewId) {
+        console.log("🔄 Processing call data using Vapi API...");
+        
+        try {
+          // Wait a bit for Vapi to finalize the call data
+          setTimeout(async () => {
+            // Since we can't get call ID directly from events, we'll use the most recent call
+            // First, let's try to get recent calls and find ours
+            const response = await fetch('/api/vapi/process-recent-call', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                userId: userId,
+                username: userName,
+                interviewId: interviewId
+              })
+            });
+
+            const result = await response.json();
+            
+            if (result.success) {
+              console.log("✅ Interview data processed successfully");
+              // Redirect to feedback page
+              router.push(`/interview/${interviewId}/feedback`);
+            } else {
+              console.error("❌ Failed to process interview data:", result.error);
+              alert("Interview completed but there was an issue saving the data. Please contact support.");
+            }
+          }, 3000); // Wait 3 seconds for Vapi to finalize data
+          
+        } catch (error) {
+          console.error("❌ Error processing call:", error);
+          alert("Interview completed but there was an issue saving the data. Please contact support.");
         }
-      }, 3000); // Wait 3 seconds for workflow to complete
+      }
     };
 
     const onMessage = (message: Message) => {
