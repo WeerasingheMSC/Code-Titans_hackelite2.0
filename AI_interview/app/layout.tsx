@@ -12,6 +12,11 @@ const monaSans = Mona_Sans({
 export const metadata: Metadata = {
   title: "SkillSync - AI Interview Platform",
   description: "An AI-powered platform for preparing for mock interviews and skill development",
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({
@@ -21,6 +26,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <link rel="icon" href="/logo.png" type="image/png" />
+        <link rel="shortcut icon" href="/logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+      </head>
       <body className={`${monaSans.className} antialiased pattern`}>
         {/* Floating lines overlay for both horizontal and vertical movement */}
         <div className="floating-lines">
