@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import Agent from "@/components/Agent";
 import { getRandomInterviewCover } from "@/lib/utils";
+import { RouteParams } from "@/types";
 
 import {
   getFeedbackByInterviewId,

@@ -2,6 +2,7 @@
 
 import { auth, db } from "@/firebase/admin";
 import { cookies } from "next/headers";
+import { User, SignInParams, SignUpParams } from "@/types";
 
 // Session duration (1 week)
 const SESSION_DURATION = 60 * 60 * 24 * 7;
@@ -23,6 +24,12 @@ export async function setSessionCookie(idToken: string) {
     path: "/",
     sameSite: "lax",
   });
+}
+
+// Clear session cookie
+export async function clearSession() {
+  const cookieStore = await cookies();
+  cookieStore.delete('session');
 }
 
 export async function signUp(params: SignUpParams) {
