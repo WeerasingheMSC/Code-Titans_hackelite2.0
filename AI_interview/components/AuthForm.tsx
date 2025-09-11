@@ -18,6 +18,7 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 
 import { signIn, signUp } from "@/lib/actions/auth.action";
+import { FormType } from "@/types";
 import FormField from "./FormField";
 
 const authFormSchema = (type: FormType) => {
@@ -101,13 +102,14 @@ const AuthForm = ({ type }: { type: FormType }) => {
     <div className="card-border lg:min-w-[566px] animate-scaleIn">
       <div className="flex flex-col gap-6 card py-14 px-10">
         <div className="flex flex-col items-center gap-4 animate-fadeIn">
-          <div className="p-3 bg-gradient-to-r from-primary-100 to-primary-200 rounded-2xl shadow-xl">
-            <svg width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8 10L16 6L24 10L16 14L8 10Z" fill="#020408" fillOpacity="0.8"/>
-              <path d="M8 14L16 10L24 14L16 18L8 14Z" fill="#020408" fillOpacity="0.6"/>
-              <path d="M8 18L16 14L24 18L16 22L8 18Z" fill="#020408" fillOpacity="0.8"/>
-              <circle cx="16" cy="14" r="2" fill="#020408"/>
-            </svg>
+          <div className="flex items-center justify-center w-16 h-16 bg-white rounded-full shadow-xl p-2">
+            <Image 
+              src="/logo.png" 
+              alt="SkillSync Logo" 
+              width={52} 
+              height={52}
+              className="object-contain rounded-full"
+            />
           </div>
           <div className="text-center">
             <h2 className="text-primary-100 font-bold text-2xl">SkillSync</h2>

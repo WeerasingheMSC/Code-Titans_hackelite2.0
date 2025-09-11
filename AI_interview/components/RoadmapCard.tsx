@@ -9,7 +9,6 @@ type RoadmapCardProps = {
   currentPosition: string;
   targetTimeline: string;
   createdAt: string | Date;
-  progress: number;
 };
 
 export default function RoadmapCard({
@@ -18,8 +17,7 @@ export default function RoadmapCard({
   jobRole,
   currentPosition,
   targetTimeline,
-  createdAt,
-  progress
+  createdAt
 }: RoadmapCardProps) {
   const formattedDate = new Date(createdAt).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -40,13 +38,6 @@ export default function RoadmapCard({
       <div className="space-y-3 mb-4">
         <div className="flex justify-between text-sm">
           <span className="text-light-100">Target: {targetTimeline}</span>
-          <span className="text-primary-100 font-medium">{progress}% Complete</span>
-        </div>
-        <div className="w-full bg-dark-300 rounded-full h-2">
-          <div 
-            className="bg-primary-100 h-2 rounded-full transition-all" 
-            style={{ width: `${progress}%` }}
-          ></div>
         </div>
       </div>
       

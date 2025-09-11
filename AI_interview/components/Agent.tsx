@@ -6,9 +6,8 @@ import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
-import { interviewer } from "@/constants";
 import { createFeedback } from "@/lib/actions/general.action";
-import { AgentProps } from "@/types";
+import { AgentProps, Message } from "@/types";
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -147,6 +146,14 @@ const Agent = ({
           },
         });
       } else {
+        const interviewAssistantId = process.env.NEXT_PUBLIC_VAPI_INTERVIEW_ASSISTANT_ID;
+        
+        console.log("Interview Assistant ID:", interviewAssistantId);
+        
+        if (!interviewAssistantId) {
+          throw new Error("NEXT_PUBLIC_VAPI_INTERVIEW_ASSISTANT_ID is not configured");
+        }
+
         let formattedQuestions = "";
         if (questions) {
           formattedQuestions = questions
@@ -154,9 +161,9 @@ const Agent = ({
             .join("\n");
         }
 
-        console.log("Using Interviewer config");
+        console.log("Using Interview Assistant");
 
-        await vapi.start(interviewer, {
+        await vapi.start(interviewAssistantId, {
           variableValues: {
             questions: formattedQuestions,
             username: userName || "User",
@@ -184,14 +191,15 @@ const Agent = ({
         {/* AI Interviewer Card */}
         <div className="card-interviewer animate-scaleIn mt-10">
           <div className="avatar">
-            <div className="p-2 bg-gradient-to-r from-primary-100 to-primary-200 rounded-xl shadow-lg">
-            <svg width="64" height="56" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8 10L16 6L24 10L16 14L8 10Z" fill="#020408" fillOpacity="0.8"/>
-              <path d="M8 14L16 10L24 14L16 18L8 14Z" fill="#020408" fillOpacity="0.6"/>
-              <path d="M8 18L16 14L24 18L16 22L8 18Z" fill="#020408" fillOpacity="0.8"/>
-              <circle cx="16" cy="14" r="2" fill="#020408"/>
-            </svg>
-          </div>
+            <div className="flex items-center justify-center w-16 h-16 bg-white rounded-full shadow-lg p-2">
+              <Image 
+                src="/logo.png" 
+                alt="SkillSync Logo" 
+                width={52} 
+                height={52}
+                className="object-contain rounded-full"
+              />
+            </div>
             {isSpeaking && <span className="animate-speak" />}
           </div>
           <h3>SkillSync AI</h3>

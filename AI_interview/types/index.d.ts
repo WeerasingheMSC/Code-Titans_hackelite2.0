@@ -162,7 +162,6 @@ export interface RoadmapCardProps {
   currentPosition: string;
   targetTimeline: string;
   createdAt: Date;
-  progress: number;
 }
 
 export interface Roadmap {

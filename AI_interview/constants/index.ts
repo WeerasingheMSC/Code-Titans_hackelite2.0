@@ -28,18 +28,81 @@ export const interviewer = {
   firstMessage: "Hello! I'm your AI interviewer. Are you ready to begin?",
 };
 
-// Add the missing interviewCovers array
+// Interview cover images available in public/covers directory
 export const interviewCovers = [
-  "/cover1.jpg",
-  "/cover2.jpg",
-  "/cover3.jpg",
-  // Add more cover paths as needed
+  "/adobe.png",
+  "/amazon.png",
+  "/facebook.png",
+  "/hostinger.png",
+  "/pinterest.png",
+  "/quora.png",
+  "/reddit.png",
+  "/skype.png",
+  "/spotify.png",
+  "/telegram.png",
+  "/tiktok.png",
+  "/yahoo.png",
 ];
 
 export const mappings = {
-  // Your mappings here
+  // Programming Languages
   javascript: "javascript",
   python: "python",
   java: "java",
-  // Add more mappings as needed
+  typescript: "typescript",
+  csharp: "csharp",
+  cpp: "cplusplus",
+  "c++": "cplusplus",
+  php: "php",
+  ruby: "ruby",
+  go: "go",
+  rust: "rust",
+  kotlin: "kotlin",
+  swift: "swift",
+  dart: "dart",
+  
+  // Frontend Frameworks & Libraries
+  react: "react",
+  reactjs: "react",
+  vue: "vuejs",
+  vuejs: "vuejs",
+  angular: "angularjs",
+  svelte: "svelte",
+  nextjs: "nextjs",
+  "next.js": "nextjs",
+  nuxtjs: "nuxtjs",
+  "nuxt.js": "nuxtjs",
+  
+  // Backend Frameworks
+  nodejs: "nodejs",
+  "node.js": "nodejs",
+  express: "express",
+  expressjs: "express",
+  django: "django",
+  flask: "flask",
+  spring: "spring",
+  laravel: "laravel",
+  
+  // Databases
+  mongodb: "mongodb",
+  mysql: "mysql",
+  postgresql: "postgresql",
+  redis: "redis",
+  sqlite: "sqlite",
+  
+  // Cloud & DevOps
+  aws: "amazonwebservices",
+  docker: "docker",
+  kubernetes: "kubernetes",
+  terraform: "terraform",
+  jenkins: "jenkins",
+  
+  // Tools & Others
+  git: "git",
+  github: "github",
+  gitlab: "gitlab",
+  vscode: "vscode",
+  figma: "figma",
+  
+  // Fallback for unknown technologies
 };

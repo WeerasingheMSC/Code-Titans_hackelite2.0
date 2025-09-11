@@ -1,5 +1,13 @@
-import RoadMap from "@/components/RoadMap";
+import RoadMapEnhanced from "@/components/RoadMapTest";
+import { getCurrentUser } from "@/lib/actions/auth.action";
 
-export default function RoadmapPage() {
-  return <RoadMap userId={"yourUserId"} userName={"yourUserName"} />;
+export default async function RoadmapPage() {
+  const user = await getCurrentUser();
+  
+  return (
+    <RoadMapEnhanced 
+      userId={user?.id || null} 
+      userName={user?.name || null} 
+    />
+  );
 }

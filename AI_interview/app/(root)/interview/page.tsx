@@ -1,4 +1,5 @@
 import Agent from "@/components/Agent";
+import Image from "next/image";
 import InterviewInfoModal from "@/components/InterviewInfoModal";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 
@@ -15,13 +16,14 @@ const Page = async () => {
         {/* Minimal Header */}
         <section className="text-center space-y-4 animate-fadeIn">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="p-3 bg-gradient-to-r from-primary-100 to-primary-200 rounded-2xl shadow-xl">
-              <svg width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 10L16 6L24 10L16 14L8 10Z" fill="#020408" fillOpacity="0.8"/>
-                <path d="M8 14L16 10L24 14L16 18L8 14Z" fill="#020408" fillOpacity="0.6"/>
-                <path d="M8 18L16 14L24 18L16 22L8 18Z" fill="#020408" fillOpacity="0.8"/>
-                <circle cx="16" cy="14" r="2" fill="#020408"/>
-              </svg>
+            <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow-xl p-2">
+              <Image 
+                src="/logo.png" 
+                alt="SkillSync Logo" 
+                width={45} 
+                height={45}
+                className="object-contain rounded-full"
+              />
             </div>
             <h1 className="text-3xl font-bold text-white">Interview Studio</h1>
           </div>
@@ -44,7 +46,6 @@ const Page = async () => {
             <Agent
               userName={user?.name!}
               userId={user?.id}
-              profileImage={user?.profileURL}
               type="generate"
             />
           </div>
