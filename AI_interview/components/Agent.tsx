@@ -181,15 +181,16 @@ const Agent = ({
     <div className="space-y-8">
       <div className="call-view">
         {/* AI Interviewer Card */}
-        <div className="card-interviewer animate-scaleIn">
+        <div className="card-interviewer animate-scaleIn mt-10">
           <div className="avatar">
-            <Image
-              src="/ai-avatar.png"
-              alt="SkillSync AI Interviewer"
-              width={65}
-              height={54}
-              className="object-cover"
-            />
+            <div className="p-2 bg-gradient-to-r from-primary-100 to-primary-200 rounded-xl shadow-lg">
+            <svg width="64" height="56" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 10L16 6L24 10L16 14L8 10Z" fill="#020408" fillOpacity="0.8"/>
+              <path d="M8 14L16 10L24 14L16 18L8 14Z" fill="#020408" fillOpacity="0.6"/>
+              <path d="M8 18L16 14L24 18L16 22L8 18Z" fill="#020408" fillOpacity="0.8"/>
+              <circle cx="16" cy="14" r="2" fill="#020408"/>
+            </svg>
+          </div>
             {isSpeaking && <span className="animate-speak" />}
           </div>
           <h3>SkillSync AI</h3>
@@ -219,7 +220,7 @@ const Agent = ({
         </div>
 
         {/* User Profile Card */}
-        <div className="card-border animate-scaleIn" style={{ animationDelay: '0.1s' }}>
+        <div className="card-border animate-scaleIn mt-10" style={{ animationDelay: '0.1s' }}>
           <div className="card-content">
             <Image
               src="/user-avatar.png"
@@ -241,7 +242,7 @@ const Agent = ({
         <div className="transcript-border animate-fadeIn">
           <div className="transcript">
             <div className="text-center mb-3">
-              <span className="text-sm font-medium text-primary-100">Live Transcript</span>
+  
             </div>
             <p
               key={lastMessage}

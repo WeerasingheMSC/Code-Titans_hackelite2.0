@@ -43,12 +43,9 @@ Example flow:
 
 **Method:** `POST`
 
-**URL:** `https://ai-interviews-o2wpukqp2-sahan-champathi-weerasinghes-projects.vercel.app/api/vapi/store-interview`
+**URL:** `https://ai-interviews-a0krqbk8o-sahan-champathi-weerasinghes-projects.vercel.app/api/vapi/store-interview`
 
-⚠️ **IMPORTANT**: Make sure this URL is your current Vercel deployment URL. 
-- Check your `.env.local` file for `NEXT_PUBLIC_BASE_URL`
-- Or deploy your latest changes to Vercel to ensure the API endpoint is available
-- Test the endpoint by running: `curl -X POST [YOUR_URL]/api/vapi/store-interview -H "Content-Type: application/json" -d '{"test":"data"}'`
+✅ **VERIFIED**: This URL is working correctly and returns successful responses.
 
 **Headers:**
 Add one header property:
@@ -119,7 +116,7 @@ Copy this JSON configuration when setting up the tool in Vapi Dashboard:
   },
   "name": "storeInterviewData",
   "description": "Stores the collected interview data in Firebase database with questions, user preferences, and conversation transcript.",
-  "url": "https://ai-interviews-o2wpukqp2-sahan-champathi-weerasinghes-projects.vercel.app/api/vapi/store-interview",
+  "url": "https://ai-interviews-a0krqbk8o-sahan-champathi-weerasinghes-projects.vercel.app/api/vapi/store-interview",
   "method": "POST",
   "headers": {
     "type": "object",
@@ -238,7 +235,7 @@ The API will create this structure in Firebase:
 2. **Tool Name:** `storeInterviewData`
 3. **Description:** `Stores the collected interview data in Firebase database with questions, user preferences, and conversation transcript.`
 4. **Method:** `POST`
-5. **URL:** `https://ai-interviews-o2wpukqp2-sahan-champathi-weerasinghes-projects.vercel.app/api/vapi/store-interview`
+5. **URL:** `https://ai-interviews-a0krqbk8o-sahan-champathi-weerasinghes-projects.vercel.app/api/vapi/store-interview`
 
 ### Step 3: Configure Headers
 Add one header:
