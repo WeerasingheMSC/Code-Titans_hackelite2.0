@@ -1,6 +1,63 @@
-interface Feedback {
+export enum MessageTypeEnum {
+  TRANSCRIPT = "transcript",
+  FUNCTION_CALL = "function-call",
+  FUNCTION_CALL_RESULT = "function-call-result",
+  ADD_MESSAGE = "add-message",
+}
+
+export enum MessageRoleEnum {
+  USER = "user",
+  SYSTEM = "system",
+  ASSISTANT = "assistant",
+}
+
+export enum TranscriptMessageTypeEnum {
+  PARTIAL = "partial",
+  FINAL = "final",
+}
+
+export interface BaseMessage {
+  type: MessageTypeEnum;
+}
+
+export interface TranscriptMessage extends BaseMessage {
+  type: MessageTypeEnum.TRANSCRIPT;
+  role: MessageRoleEnum;
+  transcriptType: TranscriptMessageTypeEnum;
+  transcript: string;
+}
+
+export interface FunctionCallMessage extends BaseMessage {
+  type: MessageTypeEnum.FUNCTION_CALL;
+  functionCall: {
+    name: string;
+    parameters: unknown;
+  };
+}
+
+export interface FunctionCallResultMessage extends BaseMessage {
+  type: MessageTypeEnum.FUNCTION_CALL_RESULT;
+  functionCallResult: {
+    forwardToClientEnabled?: boolean;
+    result: unknown;
+    [a: string]: unknown;
+  };
+}
+
+export interface SavedMessage {
+  role: string;
+  content: string;
+}
+
+export type Message =
+  | TranscriptMessage
+  | FunctionCallMessage
+  | FunctionCallResultMessage;
+
+export interface Feedback {
   id: string;
   interviewId: string;
+  userId: string;
   totalScore: number;
   categoryScores: Array<{
     name: string;
@@ -13,7 +70,7 @@ interface Feedback {
   createdAt: string;
 }
 
-interface Interview {
+export interface Interview {
   id: string;
   role: string;
   level: string;
@@ -25,20 +82,20 @@ interface Interview {
   finalized: boolean;
 }
 
-interface CreateFeedbackParams {
+export interface CreateFeedbackParams {
   interviewId: string;
   userId: string;
   transcript: { role: string; content: string }[];
   feedbackId?: string;
 }
 
-interface User {
+export interface User {
   name: string;
   email: string;
   id: string;
 }
 
-interface InterviewCardProps {
+export interface InterviewCardProps {
   interviewId?: string;
   userId?: string;
   role: string;
@@ -47,7 +104,7 @@ interface InterviewCardProps {
   createdAt?: string;
 }
 
-interface AgentProps {
+export interface AgentProps {
   userName: string;
   userId?: string;
   interviewId?: string;
@@ -56,36 +113,36 @@ interface AgentProps {
   questions?: string[];
 }
 
-interface RouteParams {
+export interface RouteParams {
   params: Promise<Record<string, string>>;
   searchParams: Promise<Record<string, string>>;
 }
 
-interface GetFeedbackByInterviewIdParams {
+export interface GetFeedbackByInterviewIdParams {
   interviewId: string;
   userId: string;
 }
 
-interface GetLatestInterviewsParams {
+export interface GetLatestInterviewsParams {
   userId: string;
   limit?: number;
 }
 
-interface SignInParams {
+export interface SignInParams {
   email: string;
   idToken: string;
 }
 
-interface SignUpParams {
+export interface SignUpParams {
   uid: string;
   name: string;
   email: string;
   password: string;
 }
 
-type FormType = "sign-in" | "sign-up";
+export type FormType = "sign-in" | "sign-up";
 
-interface InterviewFormProps {
+export interface InterviewFormProps {
   interviewId: string;
   role: string;
   level: string;
@@ -94,6 +151,41 @@ interface InterviewFormProps {
   amount: number;
 }
 
-interface TechIconProps {
+export interface TechIconProps {
   techStack: string[];
+}
+
+export interface RoadmapCardProps {
+  userId: string;
+  roadmapId: string;
+  jobRole: string;
+  currentPosition: string;
+  targetTimeline: string;
+  createdAt: Date;
+  progress: number;
+}
+
+export interface Roadmap {
+  id: string;
+  userId: string;
+  jobRole: string;
+  currentPosition: string;
+  experienceLevel: string;
+  targetTimeline: string;
+  skills: string[];
+  goals: string[];
+  content: any;
+  progress: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface GenerateRoadmapParams {
+  jobRole: string;
+  currentPosition: string;
+  experienceLevel: string;
+  targetTimeline: string;
+  skills: string[];
+  goals: string[];
+  userId: string;
 }
